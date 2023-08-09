@@ -15,7 +15,5 @@ def c():
 def d():
   pass
 
-
-
-def e():
+def f():
   pass
