@@ -11,9 +11,13 @@ def c():
   pass
 
 
-
 def d():
   pass
 
+
 def f():
+  pass
+
+
+def g():
   pass
