@@ -9,3 +9,8 @@ def b():
 
 def c():
   pass
+
+
+
+def d():
+  pass
