@@ -1,0 +1,47 @@
+name: Test saltmaster
+
+on:
+  # Only triggers on push to main branch as there is no merge event as of now 
+  push:
+    branches:
+      - main
+
+env:
+  BASE_NGROK_URL: ${{ secrets.BASE_NGROK_URL }}
+
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10' 
+
+      - name: iNSTALL REQUESTS
+        run: pip install requests
+
+      - name: Login to saltmaster 
+        uses: jannekem/run-python-script-action@v1
+        with:
+          script: |
+        
+            import requests
+            session = requests.Session()
+            session.post(
+                "${{SECRETS.BASE_NGROK_URL}}login",
+                json={
+                    "username": "${{ secrets.SALT_USER }}",
+                    "password": "${{ secrets.SALT_PASSWORD }}",
+                    "eauth": "pam",
+                },
+            )
+
+            # Invoke endpoint
+            session.post("${{SECRETS.BASE_NGROK_URL}}hook/fileserver/gitfs/update")
+        
